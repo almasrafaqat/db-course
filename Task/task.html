@@ -1,8 +1,23 @@
 1. Installation Laravel
+Lec 6
+=================
 2. env file database connect mycase is laravel_database
-3. __databse_database.sqlite
-4. 
+3. ___databse_database.sqlite
+4. ___databse_database.sqlite >
 From'database' => env('DB_DATABASE', database_path('database.sqlite')),
 To
 'database' => database_path('database.sqlite'),
+5.
+___database___migration_user_tables
 
+Schema::connection('sqlite')->dropIfExists('users');
+
+        Schema::connection('sqlite')->create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
