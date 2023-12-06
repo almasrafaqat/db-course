@@ -3,14 +3,14 @@ Lec 6
 =================
 2. env file database connect mycase is laravel_database
 3. ___databse_database.sqlite
-4. ___databse_database.sqlite >
+4. ___config_database.php 42 line>
 From'database' => env('DB_DATABASE', database_path('database.sqlite')),
 To
 'database' => database_path('database.sqlite'),
 5.
 ___database___migration_user_tables
 
-Schema::connection('sqlite')->dropIfExists('users');
+        Schema::connection('sqlite')->dropIfExists('users');
 
         Schema::connection('sqlite')->create('users', function (Blueprint $table) {
             $table->id();
@@ -21,3 +21,19 @@ Schema::connection('sqlite')->dropIfExists('users');
             $table->rememberToken();
             $table->timestamps();
         });
+6. cmd create userSeeder
+7.userSeeder.php => factory(App),.... $connection of sqlite.
+factory(App\User::class, 3)->create();
+
+        $connection = 'sqlite';
+        $users = factory(App\User::class, 3)->make();
+        $users->each(function($model) use($connection) {
+            $model->setConnection($connection);
+            $model->save();
+        });
+
+8.DatabaseSeeder.php
+9. cmd => php artisan migrate:fresh --seed
+10.create mysqlo database using query in web.php and reload the page.
+11 web.php select db users for sqlie and mysql dump...
+
