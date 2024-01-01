@@ -3,6 +3,8 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
+use App\Models\Comment;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,24 +20,14 @@ use Illuminate\Support\Facades\DB;
 
 
 Route::get('/', function () {
-    // $pdo = DB::connection(/*'sqlite'*/)->getPdo();
-    // $users = $pdo->query('select * from users')->fetchAll();
 
-    // $result = DB::select('select * from users where id = ? and name = ?', [1, 'Adalberto Gerlach']);
-    // $result = DB::select('select * from users where id = :id', ['id' => 1]);
+    return $result = User::select([
+        'users.*',
+        'last_comment_at'   => Comment::selectRaw('MAX(created_at)')
+            ->whereColumn('user_id', 'users.id')
+    ])->withCasts([
+        'last_comment_at' => 'datetime:m-d',
+    ])->get();
 
-    // DB::insert('insert into users (name, email,password) values (?, ?, ?)', ['Inserted Name', 'email@fdf.fd','passw']);
-
-    // $affected = DB::update('update users set email = "updatedemail@email.com" where email = ?', ['email@fdf.fd']);
-
-    // $deleted = DB::delete('delete from users where id = ?',[4]);
-
-    // DB::statement('truncate table users');
-
-    // $result = DB::select('select * from users');
-    // $result = DB::table('users')->select()->get();
-    $result = User::all();
-
-    dump($result);
     return view('welcome');
 });
