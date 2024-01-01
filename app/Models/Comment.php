@@ -37,14 +37,18 @@ class Comment extends Model
     //     return  $value + 10;
     // }
 
-    public function getWhoWhatAttribute()
-    {
-        return "user {$this->user_id} rates {$this->rating}";
+    // public function getWhoWhatAttribute()
+    // {
+    //     return "user {$this->user_id} rates {$this->rating}";
+    // }
+
+    // public function setRatingAttribute($value)
+    // {
+    //     $this->attributes['rating'] = $value + 1;
+    // }
+    
+    public function user(){
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
-    public function setRatingAttribute($value)
-    {
-        $this->attributes['rating'] = $value + 1;
-    }
-    
 }

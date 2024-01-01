@@ -1,9 +1,12 @@
 <?php
 
+use App\Models\Address;
+use App\Models\City;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Models\Comment;
+use App\Models\Room;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /*
@@ -21,13 +24,24 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 Route::get('/', function () {
 
-    return $result = User::select([
-        'users.*',
-        'last_comment_at'   => Comment::selectRaw('MAX(created_at)')
-            ->whereColumn('user_id', 'users.id')
-    ])->withCasts([
-        'last_comment_at' => 'datetime:m-d',
-    ])->get();
+    // $result = Room::find(9);
+    $result = Room::where('id', 3)->get();
+
+    // $result->map(function($room){
+    //     echo $room->cities->map(function($city){
+    //         // echo $city . '<br/>';
+    //         dump($city->pivot->created_at);
+    //     });
+    // });
+    foreach ($result as $rooms) {
+        foreach ($rooms->cities as $city) {
+            echo '<h1>' . $city->name . '</h1>';
+            // echo $city->pivot->room_id . '<br>';
+            dump($city->pivot->created_at);
+        }
+    }
+
+
 
     return view('welcome');
 });
