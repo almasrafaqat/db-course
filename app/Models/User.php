@@ -17,6 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    // protected $with = ['address'];
     protected $fillable = [
         'name',
         'email',
@@ -43,13 +44,32 @@ class User extends Authenticatable
         'meta'              => 'json',
     ];
 
+    // public function address()
+    // {
+    //     return $this->hasOne('App\Models\Address', 'user_id', 'id'); // 2nd 3rd args optional
+    // }
+
     public function address()
     {
-        return $this->hasOne('App\Models\Address', 'user_id', 'id'); // 2nd 3rd args optional
+        return $this->hasOne('App\Models\Address', 'user_id', 'id')->withDefault(['country'=>'no addrees attached yet']); // 2nd 3rd args optional
+        // withDefault() only for: belongsTo, hasOne, hasOneThrough, and morphOne relations
     }
+
 
     public function comments(){
         return $this->hasMany('App\Models\Comment', 'user_id', 'id'); // 2nd 3rd args optional
+    }
+
+    public function image(){
+        return $this->morphOne('App\Models\Image', 'imageable');
+    }
+
+    public function likedImages(){
+        return $this->morphedByMany('App\Models\Image', 'likeable');
+    }
+
+    public function likedRooms(){
+        return $this->morphedByMany('App\Models\Room', 'likeable');
     }
   
 }

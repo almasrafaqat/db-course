@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Models\Comment;
+use App\Models\Company;
+use App\Models\Image;
+use App\Models\Reservation;
 use App\Models\Room;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,23 +27,14 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 Route::get('/', function () {
 
-    // $result = Room::find(9);
-    $result = Room::where('id', 3)->get();
 
-    // $result->map(function($room){
-    //     echo $room->cities->map(function($city){
-    //         // echo $city . '<br/>';
-    //         dump($city->pivot->created_at);
-    //     });
-    // });
-    foreach ($result as $rooms) {
-        foreach ($rooms->cities as $city) {
-            echo '<h1>' . $city->name . '</h1>';
-            // echo $city->pivot->room_id . '<br>';
-            dump($city->pivot->created_at);
-        }
-    }
 
+
+    // $result = User::with('comments')->get();
+
+    $result = DB::table('users')->join('comments', 'users.id', '=', 'comments.user_id')->get();
+  
+    dump($result);
 
 
     return view('welcome');
